@@ -18,6 +18,5 @@ public class StartUpActivity extends Activity {
 
         Toast.makeText(this, deviceId, Toast.LENGTH_LONG).show();
 
-
     }
 }
