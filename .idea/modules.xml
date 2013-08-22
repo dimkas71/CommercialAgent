@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Commercial Agent.iml" filepath="$PROJECT_DIR$/Commercial Agent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tests xml json/tests xml json.iml" filepath="$PROJECT_DIR$/tests xml json/tests xml json.iml" />
     </modules>
   </component>
 </project>
