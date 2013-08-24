@@ -4,9 +4,13 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+import org.xmlpull.v1.XmlSerializer;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -33,17 +37,24 @@ public class Main extends DefaultHandler {
     }
 
 
-    public static void main(String[] args) throws IOException, SAXException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, SAXException, ClassNotFoundException, XmlPullParserException {
 
-//        List<Person> persons = getPersonsFromXML("./data/demo.xml");
-//        savePersonsToSQLite(persons);
 
+        //final String xmlPathIn = "./data/demo.xml";
+        final String xmlPathIn = "./data/saved.xml";
+
+        List<Person> persons = getPersonsFromXML(xmlPathIn);
+        savePersonsToSQLite(persons);
+
+/*
         List<Person> persons = getPersonsFromSQLite();
 
         for (Person person : persons) {
             System.out.println(person);
         }
 
+        savePersonsToXML(persons);
+*/
 
     }
 
@@ -162,7 +173,63 @@ public class Main extends DefaultHandler {
         return persons;
     }
 
-    private static void savePersonsToXML(List<Person> persons) {
+    private static void savePersonsToXML(List<Person> persons) throws XmlPullParserException, IOException {
         //TODO: write algorithm for saving list of persons to xml file ("./data/saved.xml")
+
+
+        //region code below don't worked, because of it needs to have a factory to create XmlSerializer...
+       /* XmlSerializer xmlSerializer = XmlPullParserFactory.newInstance().newSerializer();
+
+
+        xmlSerializer.setOutput(new FileWriter(new File("./data/saved.xml")));
+
+        xmlSerializer.startDocument("<?xml version=\"1.0\" encoding=\"utf-8\"?>", true);
+
+        xmlSerializer.startTag("", "persons")
+            .startTag("", "person")
+            .attribute("", "name", "Dmitriy")
+            .endTag("", "person")
+            .endTag("", "persons")
+            .endDocument();
+
+        xmlSerializer.flush();*/
+        //endregion
+
+
+
+        final String startDocument = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+
+
+        File xmlFile = new File("./data/saved.xml");
+        xmlFile.createNewFile();
+
+        FileWriter fileWriter = new FileWriter(xmlFile);
+
+        fileWriter.write(startDocument);
+
+        fileWriter.write("<persons>" + "\n"); //start tag persons
+        for (Person person : persons) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("\t<person name=")
+                    .append('"')
+                    .append(person.getName())
+                    .append('"')
+                    .append(" age=")
+                    .append('"')
+                    .append(String.format("%d", person.getAge()))
+                    .append('"')
+                    .append(" />");
+            fileWriter.write(sb.toString() + "\n");
+
+        }
+
+        fileWriter.write("</persons>" + "\n"); //end tag persons
+
+        fileWriter.close();
+
+
+
+
+
     }
 }
