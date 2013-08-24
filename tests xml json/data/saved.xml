@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<persons>
+	<person name="Dimkas" age="41" />
+	<person name="Vasily" age="39" />
+	<person name="Orest" age="37" />
+	<person name="Inna" age="36" />
+	<person name="Vladik" age="11" />
+	<person name="Victor" age="43" />
+	<person name="Tetjana" age="40" />
+	<person name="Bogdan" age="7" />
+    <person name="Marianna" age="13" />
+    <person name="Seraphim" age="2" />
+</persons>
