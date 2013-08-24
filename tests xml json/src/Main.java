@@ -59,7 +59,7 @@ public class Main extends DefaultHandler {
     }
 
     private static void savePersonsToSQLite(List<Person> persons) throws ClassNotFoundException {
-        //TODO: load persons to sqlite3-type persons.db
+
         Class.forName("org.sqlite.JDBC");
 
         Connection connection = null;
@@ -76,7 +76,7 @@ public class Main extends DefaultHandler {
 
 
 
-            //TODO: delete this code in production
+
             /*
             for (Person person : saxHandler.persons) {
                 //insert values into database....
@@ -174,7 +174,66 @@ public class Main extends DefaultHandler {
     }
 
     private static void savePersonsToXML(List<Person> persons) throws XmlPullParserException, IOException {
-        //TODO: write algorithm for saving list of persons to xml file ("./data/saved.xml")
+
+
+        //region code below don't worked, because of it needs to have a factory to create XmlSerializer...
+       /* XmlSerializer xmlSerializer = XmlPullParserFactory.newInstance().newSerializer();
+
+
+        xmlSerializer.setOutput(new FileWriter(new File("./data/saved.xml")));
+
+        xmlSerializer.startDocument("<?xml version=\"1.0\" encoding=\"utf-8\"?>", true);
+
+        xmlSerializer.startTag("", "persons")
+            .startTag("", "person")
+            .attribute("", "name", "Dmitriy")
+            .endTag("", "person")
+            .endTag("", "persons")
+            .endDocument();
+
+        xmlSerializer.flush();*/
+        //endregion
+
+
+
+        final String startDocument = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+
+
+        File xmlFile = new File("./data/saved.xml");
+        xmlFile.createNewFile();
+
+        FileWriter fileWriter = new FileWriter(xmlFile);
+
+        fileWriter.write(startDocument);
+
+        fileWriter.write("<persons>" + "\n"); //start tag persons
+        for (Person person : persons) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("\t<person name=")
+                    .append('"')
+                    .append(person.getName())
+                    .append('"')
+                    .append(" age=")
+                    .append('"')
+                    .append(String.format("%d", person.getAge()))
+                    .append('"')
+                    .append(" />");
+            fileWriter.write(sb.toString() + "\n");
+
+        }
+
+        fileWriter.write("</persons>" + "\n"); //end tag persons
+
+        fileWriter.close();
+
+
+
+
+
+    }
+
+
+    private static void savePersonsToXML2(List<Person> persons) throws XmlPullParserException, IOException {
 
 
         //region code below don't worked, because of it needs to have a factory to create XmlSerializer...
